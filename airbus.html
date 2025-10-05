@@ -1,0 +1,126 @@
+<head>
+  <script sync src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6myHzS10YXdcazAFalmXvDkrYCp5cLc8&v=beta&libraries=maps3d" defer>
+</script>
+  <style>
+html, body {
+  margin: 0; 
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: transparent; 
+  direction: rtl;
+}
+gmp-map-3d {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: 100%; 
+  height: 100%; 
+  z-index: 0;}
+#three-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  height: 70%;
+  pointer-events: auto;
+  z-index: 10;}
+canvas {display:block;}
+  </style>
+</head>
+<body>
+<gmp-map-3d mode="hybrid"
+            center="37.7469897,48.7537908,226"
+            range="12500"
+            tilt="80"
+            >
+</gmp-map-3d>
+<div id="three-container"></div>
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+  let scene, camera, renderer, controls, model;
+  let airplanePosition = new THREE.Vector3(0, 0, 0);
+  let airplaneRotation = new THREE.Euler(0, 0, 0, 'YXZ');
+  const speed = 0.014;
+  const rotationSpeed = 0.05;
+  const container = document.getElementById('three-container');
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(30, window.innerWidth/window.innerHeight, 0.1, 500);
+  camera.position.set(0, 1, 3);
+  camera.lookAt(0,0,0);
+  renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+  container.appendChild(renderer.domElement);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  scene.add(ambientLight);
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.1;
+  controls.enablePan = false;
+  controls.minDistance = 0.1;
+  controls.maxDistance = 10;
+  
+  const loader = new THREE.GLTFLoader();
+  loader.load('https://docs-media.maptiler.com/docs/models/plane_a340.glb',
+    gltf => {
+      model = gltf.scene;
+      model.scale.set(0.001, 0.001, 0.001);
+      model.position.copy(airplanePosition);
+      model.rotation.copy(airplaneRotation);
+      scene.add(model);
+    },
+    undefined,
+    error => console.error('خطا در لود مدل:', error)
+  );
+  let clock = new THREE.Clock();
+
+  function updatePositionAndRotation(delta) {
+    // چرخش آرام و حرکت به جلو
+    airplaneRotation.y += rotationSpeed * delta;
+    airplanePosition.x += speed * Math.sin(airplaneRotation.y) * delta;
+    airplanePosition.z += speed * Math.cos(airplaneRotation.y) * delta;
+    if(model){
+      model.position.copy(airplanePosition);
+      model.rotation.copy(airplaneRotation);
+    }
+  }
+  function updateCameraPosition() {
+    if (!model) return;
+    const distanceBehind =5;
+    const heightAbove = 1;
+    const offset = new THREE.Vector3(-1, heightAbove, distanceBehind);
+    offset.applyEuler(airplaneRotation);
+    const camPos = airplanePosition.clone().add(offset);
+    camera.position.lerp(camPos, 0.2);
+    camera.lookAt(airplanePosition);
+  }
+  function animate() {
+    requestAnimationFrame(animate);
+    let delta = clock.getDelta();
+    updatePositionAndRotation(delta);
+    updateCameraPosition();
+    controls.update();
+    renderer.render(scene, camera);
+    const map = document.querySelector('gmp-map-3d');
+    if (map) {
+      const baseLat = 37.7469897;
+      const baseLng = 48.7537908;
+      const baseAlt = 1;
+      const deltaLat = airplanePosition.z * 0.000001;
+      const deltaLng = airplanePosition.x * 0.000001;
+      map.setAttribute('center', `${baseLat + deltaLat},${baseLng + deltaLng},${baseAlt}`);
+      map.setAttribute('heading', THREE.MathUtils.radToDeg(-airplaneRotation.y));
+    }
+  }
+  animate();
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+</body>
+</html>
