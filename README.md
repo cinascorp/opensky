@@ -1,6 +1,7 @@
-Towards Real-Time 3D Air Traffic Visualization
+Real-Time 3D Air Traffic Visualization
 Using HTTP/3, Web Workers, and WebGL
 
+![opensky_2025](https://github.com/user-attachments/assets/4d76964b-237c-4171-80a5-333c44ddaf74)
 
 Abstract:
 
@@ -34,3 +35,21 @@ browser rendering techniques for large-scale, open aviation data visualiza
 tion. Future work will extend the prototype to support predictive trajec.
 tory visualization, anomaly detection, and collaborative filtering of traffic
 events in real time.
+
+client side usage : 
+download pre-apk release from link : https://github.com/cinascorp/opensky/raw/refs/heads/main/TAR.apk
+for server and bigger project: 
+download repo and run live server :
+```
+pkg update && pkg upgrade -y
+```
+then install requirements : 
+```
+pkg instal http-server
+```
+download and setup repo in your terminal :
+```
+gh repo clone cinascorp/opensky
+cd opensky
+http-server
+```
