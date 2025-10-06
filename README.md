@@ -37,7 +37,8 @@ tory visualization, anomaly detection, and collaborative filtering of traffic
 events in real time.
 
 client side usage : 
-download pre-apk release from link : https://github.com/cinascorp/opensky/raw/refs/heads/main/TAR.apk
+download pre-apk release from link : https://github.com/cinascorp/opensky/raw/refs/heads/main/TAR.apk 
+
 for server and bigger project: 
 download repo and run live server :
 ```
