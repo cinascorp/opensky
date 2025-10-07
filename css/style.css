@@ -1,0 +1,157 @@
+:root {
+			--bg: #0b0f14;
+			--panel: #0f141b;
+			--text: #ffd400; /* yellow font */
+			--border: #1c2833;
+			--muted: #9aa2aa;
+			--country: #90ee90; /* light green */
+			--province: #ff69b4; /* hot pink for visibility */
+			--road: #8fd3ff; /* light blue */
+			--mil: #ff2d2d; /* red */
+			--passenger: #ffe34d; /* yellow */
+			--commercial: #ffa64d; /* orange */
+			--private: #b56dff; /* purple */
+			--droneLow: #ffffff; /* white */
+			--droneHigh: #7f7f7f; /* gray */
+}
+		html, body {
+			height: 100%;
+			background: var(--bg);
+			color: var(--text);
+		}
+		#map {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.ol-zoom, .ol-rotate {
+			filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));
+		}
+		.map-layer-toggle {
+			position: fixed;
+			top: 60px;
+			right: 10px;
+			z-index: 1100;
+			background: var(--panel);
+			border: 1px solid var(--border);
+			color: var(--text);
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bold;
+			cursor: pointer;
+		}
+		/* Offcanvas menu (right) */
+		.offcanvas-end {
+			background: var(--panel);
+			border-left: 1px solid var(--border);
+			color: var(--text);
+		}
+		.offcanvas-end .form-select, .offcanvas-end .form-control, .offcanvas-end .form-check-input {
+			background: #0b0f14;
+			color: var(--text);
+			border-color: var(--border);
+		}
+		.offcanvas-end .table {
+			color: var(--text);
+		}
+		.offcanvas-end .table thead th {
+			border-bottom-color: var(--border);
+		}
+		.offcanvas-end .table td, .offcanvas-end .table th {
+			border-color: var(--border);
+		}
+		/* Make the right menu 74% width on small screens */
+		@media (max-width: 768px) {
+			.offcanvas-end {
+				width: 60% !important;
+			}
+		}
+		/* Toggle button in top-right */
+		#menuToggle {
+			position: fixed;
+			top: 10px;
+			right: 10px;
+			z-index: 1100;
+			background: var(--panel);
+			border: 1px solid var(--border);
+			color: var(--text);
+		}
+		.badge-outline {
+			border: 1px solid var(--border);
+			color: var(--text);
+			background: transparent;
+		}
+		.legend {
+			position: fixed;
+			left: 10px;
+			bottom: 10px;
+			z-index: 1000;
+			background: rgba(15,20,27,0.9);
+			border: 1px solid var(--border);
+			border-radius: .5rem;
+			padding: .5rem .75rem;
+			font-size: .9rem;
+		}
+		.legend .item { display: flex; align-items: center; gap: .4rem; margin:.2rem 0; }
+		.legend .swatch { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+		.legend .icon-swatch { width: 20px; height: 20px; display: inline-block; }
+		/* Popup */
+		#popup {
+			position: absolute;
+			background: rgba(15,20,27,0.98);
+			border: 1px solid var(--border);
+			padding: .5rem .75rem;
+			border-radius: .5rem;
+			min-width: 240px;
+			color: var(--text);
+			z-index: 900;
+		}
+		#popup-closer { cursor: pointer; float: right; }
+		.small-muted { color: var(--muted); font-size: .85rem; }
+		/* OSM attribution */
+		#attribution {
+			position: fixed;
+			bottom: 10px;
+			right: 10px;
+			z-index: 900;
+			background: rgba(15,20,27,0.9);
+			border: 1px solid var(--border);
+			border-radius: .5rem;
+			padding: .2rem .5rem;
+			font-size: .8rem;
+		}
+		
+		/* Enhanced popup styles */
+		#popup {
+			max-width: 400px;
+		}
+		
+		#aircraft-image-container img {
+			transition: transform 0.2s ease;
+		}
+		
+		#aircraft-image-container img:hover {
+			transform: scale(1.05);
+		}
+		
+		/* Badge styles */
+		.badge-outline {
+			border: 1px solid var(--border);
+			color: var(--text);
+			background: transparent;
+		}
+
+		/* Position zoom controls on right, beneath L and Copilot */
+		.ol-zoom { left: auto; right: 10px; top: 160px; }
+
+		/* Gradient bar for altitude spectrum in guide */
+		.spectrum-bar { width: 120px; height: 16px; border-radius: 3px; display: inline-block; background: linear-gradient(to right, #FFA500, #FFFF00, #00FF00, #0000FF, #4B0082, #800080); }
+
+		/* Copilot floating button stacked under L */
+		#copilotToggle { position: fixed; top: 110px; right: 10px; }
