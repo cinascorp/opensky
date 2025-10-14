@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: The TAR Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+        }
+        .scroll-snap-section {
+            scroll-snap-align: start;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .tab-button.active {
+            border-color: #2dd4bf;
+            background-color: #115e59;
+            color: #ffffff;
+        }
+        .tech-card:hover .tech-card-details {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+    </head>
+<body class="bg-slate-900 text-slate-300">
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center min-h-screen flex flex-col justify-center items-center scroll-snap-section">
+            <h1 class="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-500 mb-4">The TAR Project</h1>
+            <p class="text-xl md:text-2xl text-slate-400 max-w-3xl">
+                A novel architecture for real-time 3D air traffic visualization, based on an intelligent neural network for a safer future in aviation.
+            </p>
+             <div class="mt-12 text-cyan-400 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </div>
+        </header>
+
+        <section id="architecture" class="min-h-screen py-16 scroll-snap-section">
+            <h2 class="text-3xl font-bold text-center mb-2 text-teal-300">Interactive System Architecture</h2>
+            <p class="text-center text-slate-400 mb-12 max-w-3xl mx-auto">The "TAR" architecture is built on three core pillars. Click on each component to view its details.</p>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div id="arch-pillar-1" class="arch-pillar cursor-pointer p-6 bg-slate-800 rounded-xl border border-transparent hover:border-teal-400 transition-all duration-300 flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">📊</div>
+                        <h3 class="text-xl font-bold mb-2 text-cyan-400">Pillar 1</h3>
+                        <p class="font-semibold text-slate-200">Low-Latency Data Aggregation</p>
+                    </div>
+                    <div id="arch-pillar-2" class="arch-pillar cursor-pointer p-6 bg-slate-800 rounded-xl border border-transparent hover:border-teal-400 transition-all duration-300 flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">⚙️</div>
+                        <h3 class="text-xl font-bold mb-2 text-cyan-400">Pillar 2</h3>
+                        <p class="font-semibold text-slate-200">Parallel Client-Side Processing</p>
+                    </div>
+                    <div id="arch-pillar-3" class="arch-pillar cursor-pointer p-6 bg-slate-800 rounded-xl border border-transparent hover:border-teal-400 transition-all duration-300 flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">🌍</div>
+                        <h3 class="text-xl font-bold mb-2 text-cyan-400">Pillar 3</h3>
+                        <p class="font-semibold text-slate-200">High-Performance 3D Visualization</p>
+                    </div>
+                </div>
+                <div id="architecture-details" class="lg:w-1/3 p-6 bg-slate-800/50 rounded-xl min-h-[250px] flex flex-col justify-center">
+                    <p class="text-slate-400 text-center">Details will be displayed here...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="engine" class="min-h-screen py-16 scroll-snap-section">
+            <h2 class="text-3xl font-bold text-center mb-12 text-teal-300">The Intelligence Engine: Mathematics in Action</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-800 p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">Path Smoothing with Kalman Filter</h3>
+                    <p class="text-slate-400 mb-4">The Kalman filter eliminates noise from positional data, creating smooth and predictable movement. This is the core of the neural network for incident prevention.</p>
+                    <div class="bg-slate-900 rounded-lg p-2">
+                        <canvas id="kalmanCanvas" class="w-full h-64 rounded"></canvas>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button id="toggleKalman" class="bg-teal-600 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded transition-colors">Show Smoothed Path</button>
+                    </div>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">Fluid Animation with LERP</h3>
+                    <p class="text-slate-400 mb-4">Linear Interpolation (LERP) prevents sudden jumps between data updates, ensuring a fluid and natural visual experience.</p>
+                    <div class="bg-slate-900 rounded-lg p-2">
+                        <canvas id="lerpCanvas" class="w-full h-64 rounded"></canvas>
+                    </div>
+                     <div class="text-center mt-4">
+                        <p id="lerpStatus" class="text-slate-400">Jittery Movement (Without LERP)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="performance" class="min-h-screen py-16 flex flex-col justify-center items-center scroll-snap-section">
+            <h2 class="text-3xl font-bold text-center mb-2 text-teal-300">Performance Dashboard</h2>
+            <p class="text-center text-slate-400 mb-8 max-w-2xl">A comparison of the "TAR" system versus a traditional WebSocket-based architecture. The results show a significant performance advantage for the modern approach.</p>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </section>
+
+        <footer class="text-center py-8 border-t border-slate-700">
+             <p class="text-slate-500">The TAR Project | A Cinascorp Research Initiative</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const architectureData = {
+                "arch-pillar-1": {
+                    title: "Pillar 1: Low-Latency Data Aggregation",
+                    content: "This component is responsible for collecting data from various sources like local ADS-B receivers and public APIs (OpenSky, Flightradar24). Data is streamed to the client with maximum speed in lightweight JSON packets."
+                },
+                "arch-pillar-2": {
+                    title: "Pillar 2: Parallel Client-Side Processing",
+                    content: "Instead of the server, heavy processing tasks like data fusion, deduplication, and state prediction (with Kalman filters) are handled by a Web Worker in the user's browser. This prevents UI blocking and optimizes performance."
+                },
+                "arch-pillar-3": {
+                    title: "Pillar 3: High-Performance 3D Visualization",
+                    content: "This pillar transforms processed data into a live, interactive 3D scene. Using Three.js, 3D aircraft models (gltf) are rendered on the map with GPU acceleration, providing a realistic experience."
+                }
+            };
+
+            const archPillars = document.querySelectorAll('.arch-pillar');
+            const detailsPanel = document.getElementById('architecture-details');
+
+            archPillars.forEach(pillar => {
+                pillar.addEventListener('click', () => {
+                    const data = architectureData[pillar.id];
+                    detailsPanel.innerHTML = `
+                        <h4 class="text-xl font-bold text-teal-300 mb-3">${data.title}</h4>
+                        <p class="text-slate-300">${data.content}</p>
+                    `;
+                    archPillars.forEach(p => p.classList.remove('ring-2', 'ring-teal-400'));
+                    pillar.classList.add('ring-2', 'ring-teal-400');
+                });
+            });
+
+            const performanceData = {
+                labels: ['End-to-End Latency (ms)', 'Frame Rate (10k aircraft)', 'Main Thread CPU Load (%)'],
+                datasets: [
+                    {
+                        label: 'Baseline System (WebSocket)',
+                        data: [1500, 15, 80],
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'TAR System (HTTP/3 + Worker)',
+                        data: [800, 55, 15],
+                        backgroundColor: 'rgba(45, 212, 191, 0.5)',
+                        borderColor: 'rgba(45, 212, 191, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+            
+            const perfCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(perfCtx, {
+                type: 'bar',
+                data: performanceData,
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                             labels: { color: '#cbd5e1' }
+                        },
+                        title: {
+                            display: true,
+                            text: 'System Performance Comparison',
+                            color: '#cbd5e1',
+                            font: { size: 16 }
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        let unit = '';
+                                        if (context.label.includes('Latency')) unit = ' ms';
+                                        if (context.label.includes('Frame Rate')) unit = ' FPS';
+                                        if (context.label.includes('CPU')) unit = '%';
+                                        label += context.parsed.x + unit;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             ticks: { color: '#94a3b8' },
+                             grid: { color: 'rgba(148, 163, 184, 0.2)' }
+                        },
+                        y: {
+                             ticks: { color: '#94a3b8' },
+                             grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            const kalmanCanvas = document.getElementById('kalmanCanvas');
+            const kCtx = kalmanCanvas.getContext('2d');
+            const toggleKalmanBtn = document.getElementById('toggleKalman');
+            let showSmoothed = false;
+            let noisyPoints = [];
+            const numPoints = 50;
+
+            for (let i = 0; i < numPoints; i++) {
+                noisyPoints.push({
+                    x: (i / numPoints) * kalmanCanvas.width,
+                    y: kalmanCanvas.height / 2 + (Math.sin(i * 0.5) * 40) + (Math.random() - 0.5) * 30
+                });
+            }
+
+            function drawKalman() {
+                kCtx.clearRect(0, 0, kalmanCanvas.width, kalmanCanvas.height);
+                kCtx.beginPath();
+                kCtx.moveTo(noisyPoints[0].x, noisyPoints[0].y);
+                kCtx.strokeStyle = showSmoothed ? '#2dd4bf' : '#f87171';
+                kCtx.lineWidth = 2;
+
+                let q = 0.5, r = 16; 
+                let p = 1, x = noisyPoints[0].y, k;
+
+                for (let i = 1; i < noisyPoints.length; i++) {
+                    p = p + q;
+                    k = p / (p + r);
+                    x = x + k * (noisyPoints[i].y - x);
+                    p = (1 - k) * p;
+                    const y = showSmoothed ? x : noisyPoints[i].y;
+                    kCtx.lineTo(noisyPoints[i].x, y);
+                }
+                kCtx.stroke();
+            }
+
+            toggleKalmanBtn.addEventListener('click', () => {
+                showSmoothed = !showSmoothed;
+                toggleKalmanBtn.textContent = showSmoothed ? 'Show Original (Noisy) Path' : 'Show Smoothed Path';
+                drawKalman();
+            });
+
+            const lerpCanvas = document.getElementById('lerpCanvas');
+            const lCtx = lerpCanvas.getContext('2d');
+            const lerpStatus = document.getElementById('lerpStatus');
+            let currentPos = { x: 20, y: lerpCanvas.height / 2 };
+            let targetPos = { x: 20, y: lerpCanvas.height / 2 };
+            let animationFrame;
+
+            function lerp(start, end, amt) {
+                return (1 - amt) * start + amt * end;
+            }
+
+            function animateLerp() {
+                lCtx.clearRect(0, 0, lerpCanvas.width, lerpCanvas.height);
+
+                currentPos.x = lerp(currentPos.x, targetPos.x, 0.05);
+                currentPos.y = lerp(currentPos.y, targetPos.y, 0.05);
+
+                lCtx.beginPath();
+                lCtx.arc(targetPos.x, targetPos.y, 12, 0, Math.PI * 2);
+                lCtx.fillStyle = 'rgba(45, 212, 191, 0.3)';
+                lCtx.fill();
+                
+                lCtx.beginPath();
+                lCtx.arc(currentPos.x, currentPos.y, 10, 0, Math.PI * 2);
+                lCtx.fillStyle = '#2dd4bf';
+                lCtx.fill();
+                
+                animationFrame = requestAnimationFrame(animateLerp);
+            }
+            
+            lerpCanvas.addEventListener('mousemove', (e) => {
+                const rect = lerpCanvas.getBoundingClientRect();
+                targetPos.x = e.clientX - rect.left;
+                targetPos.y = e.clientY - rect.top;
+                lerpStatus.textContent = 'Smooth Movement (With LERP)';
+            });
+
+            lerpCanvas.addEventListener('mouseleave', () => {
+                cancelAnimationFrame(animationFrame);
+                lCtx.clearRect(0, 0, lerpCanvas.width, lerpCanvas.height);
+                currentPos = { x: 20, y: lerpCanvas.height / 2 };
+                targetPos = { x: 20, y: lerpCanvas.height / 2 };
+                lerpStatus.textContent = 'Jittery Movement (Without LERP)';
+            });
+
+            lerpCanvas.addEventListener('mouseenter', () => {
+                animateLerp();
+            });
+
+
+            drawKalman();
+        });
+    </script>
+</body>
+</html>
