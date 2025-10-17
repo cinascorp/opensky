@@ -36,7 +36,7 @@ tion. Future work will extend the prototype to support predictive trajec.
 tory visualization, anomaly detection, and collaborative filtering of traffic
 events in real time.
 
-[Fundamental Concepts (English)](./fundamental-en.html)
+![fundamental-en](https://raw.githubusercontent.com/cinascorp/opensky/refs/heads/main/fundamental-en.html)
 
 client side usage : 
 download pre-apk release from link : https://github.com/cinascorp/opensky/raw/refs/heads/main/TAR.apk 
