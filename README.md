@@ -1,9 +1,6 @@
 Real-Time 3D Air Traffic Visualization
 Using HTTP/3, Web Workers, and WebGL
 
-![opensky_2025](https://github.com/user-attachments/assets/4d76964b-237c-4171-80a5-333c44ddaf74)
-
-
 -----
 
 ## A New Architecture for Real-Time 3D Air Traffic Visualization Using Hybrid ADS-B and API Data
