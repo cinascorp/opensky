@@ -196,9 +196,9 @@ The "TAR" project provides a comprehensive roadmap for the next generation of ai
 
 ### References
 
-1.  cinascorp. (n.d.). *tar24*. GitHub. Retrieved from [https://github.com/cinascorp/tar](https://www.google.com/search?q=https://github.com/cinascorp/tar)
-2.  cinascorp. (n.d.). *peyda*. GitHub. Retrieved from [https://github.com/cinascorp/peyda](https://www.google.com/search?q=https://github.com/cinascorp/peyda)
-3.  cinascorp. (n.d.). *tar24*. GitHub. Retrieved from [https://github.com/cinascorp/tar24](https://www.google.com/search?q=https://github.com/cinascorp/tar24)
+1.  cinascorp. (n.d.). *tar*. GitHub. Retrieved from [https://github.com/cinascorp/tar](https://www.google.com/search?q=https://github.com/cinascorp/tar)
+2.  cinascorp. (n.d.). *tar24*. GitHub. Retrieved from [https://github.com/cinascorp/tar24](https://www.google.com/search?q=https://github.com/cinascorp/tar24)
+3.  cinascorp. (n.d.). *peyda*. GitHub. Retrieved from [https://github.com/cinascorp/peyda](https://www.google.com/search?q=https://github.com/cinascorp/peyda)
 4.  cinascorp. (n.d.). *opensky*. GitHub. Retrieved from [https://github.com/cinascorp/opensky](https://www.google.com/search?q=https://github.com/cinascorp/tar/opensky)
 5.  Google Maps Platform. (n.d.). WebGL Overlay View. Retrieved from https://developers.google.com/maps/documentation/javascript/webgl
 6.  IETF QUIC Working Group. (2021). QUIC: A UDP-Based Multiplexed and Secure Transport. RFC 9000.
