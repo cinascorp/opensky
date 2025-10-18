@@ -1,5 +1,6 @@
-Real-Time 3D Air Traffic Visualization
-Using HTTP/3, Web Workers, and WebGL
+# Real-Time 3D Air Traffic Visualization Using :
+# HTTP/3, Web Workers, & WebGL
+
 <img width="2000" height="1331" alt="opensky_tar" src="https://github.com/user-attachments/assets/143c7d32-8d79-4077-bba8-1164d9702908" />
 -----
 
@@ -91,15 +92,15 @@ This multi-source approach creates a comprehensive dataset that balances latency
 
 **Data Fusion Algorithm:** To merge data from heterogeneous sources, a state estimation filter is required. The system architecture is designed to incorporate a **Kalman Filter** for this purpose. For each aircraft, identified by its unique ICAO24 hex code, a state vector $\mathbf{x}$ is maintained:
 
-$$\mathbf{x} = [p_x, p_y, p_z, v_x, v_y, v_z]^T$$
+# $$\mathbf{x} = [p_x, p_y, p_z, v_x, v_y, v_z]^T$$
 
 where $(p_x, p_y, p_z)$ are the ECEF coordinates and $(p_x, p_y, p_z)$ are the velocities. The filter predicts the next state using a constant velocity model and corrects its prediction based on incoming measurements from any source. The state transition function is given by:
 
-$$\mathbf{x}_{k} = \mathbf{F}\mathbf{x}_{k-1} + \mathbf{w}_{k-1}$$
+$$ \mathbf{x}_{k} = \mathbf{F}\mathbf{x}_{k-1} + \mathbf{w}_{k-1} $$
+ 
+ where $\mathbf{F}$ is the state transition matrix and $\mathbf{w}$ is the process noise. The measurement model is:
 
-where $\mathbf{F}$ is the state transition matrix and $\mathbf{w}$ is the process noise. The measurement model is:
-
-$$\mathbf{z}_k = \mathbf{H}\mathbf{x}_k + \mathbf{v}_k$$
+# $$\mathbf{z}_k = \mathbf{H}\mathbf{x}_k + \mathbf{v}_k$$
 
 where $\mathbf{z}_k$ is the measurement (e.g., position from an API), $\mathbf{H}$ is the observation matrix, and $\mathbf{v}_k$ is the measurement noise, whose covariance $\mathbf{R}$ can be adjusted based on the data source (e.g., higher uncertainty for API data vs. local ADS-B). This produces a fused, more accurate state vector.
 
@@ -109,11 +110,11 @@ where $\mathbf{z}_k$ is the measurement (e.g., position from an API), $\mathbf{H
 
 To convey information visually, aircraft are colored based on their altitude. The `tar.html` implementation uses a multi-stop color gradient from orange to purple, representing the altitude spectrum from sea level to approximately 17,000 meters. This is achieved through two functions. First, a value is normalized to the range $[0, 1]$:
 
-$$h' = \max\left(0, \min\left(1, \frac{h - h_{min}}{h_{max} - h_{min}}\right)\right)$$
+# $$h' = \max\left(0, \min\left(1, \frac{h - h_{min}}{h_{max} - h_{min}}\right)\right)$$
 
 where $h$ is the aircraft's altitude in meters. Second, this normalized value $h'$ is used to perform a piecewise linear interpolation between a set of predefined color stops $C_0, C_1, \ldots, C_n$. If $h'$ falls within the segment $[t_i, t_{i+1}]$, the final color $C$ is calculated as:
 
-$$C(h') = (1 - t_{local})C_i + t_{local}C_{i+1} \quad \text{where} \quad t_{local} = \frac{h' - t_i}{t_{i+1} - t_i}$$
+# $$C(h') = (1 - t_{local})C_i + t_{local}C_{i+1} \quad \text{where} \quad t_{local} = \frac{h' - t_i}{t_{i+1} - t_i}$$
 
 This logic is implemented in the `spectrumColorForAltitudeMeters` and `lerpColor` functions.
 
