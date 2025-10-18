@@ -4,8 +4,10 @@
 
 ### **A New Architecture for Real-Time 3D Air Traffic Visualization Using Hybrid ADS-B and API Data**
 
-**Authors:** [Cina Naqshbandi/CINASCORP]
-**Affiliation:** [Cina's Corporation]
+**Authors:** Cina Naqshbandi/CINASCORP
+
+**Affiliation:** Cina's Corporation
+
 **References:**
 
   * [https://github.com/cinascorp/tar](https://www.google.com/search?q=https://github.com/cinascorp/tar)
