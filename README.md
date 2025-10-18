@@ -199,13 +199,15 @@ The "TAR" project provides a comprehensive roadmap for the next generation of ai
 1.  cinascorp. (n.d.). *tar24*. GitHub. Retrieved from [https://github.com/cinascorp/tar](https://www.google.com/search?q=https://github.com/cinascorp/tar)
 2.  cinascorp. (n.d.). *peyda*. GitHub. Retrieved from [https://github.com/cinascorp/peyda](https://www.google.com/search?q=https://github.com/cinascorp/peyda)
 3.  cinascorp. (n.d.). *tar24*. GitHub. Retrieved from [https://github.com/cinascorp/tar24](https://www.google.com/search?q=https://github.com/cinascorp/tar24)
-4.   cinascorp. (n.d.). *opensky*. GitHub. Retrieved from [https://github.com/cinascorp/opensky](https://www.google.com/search?q=https://github.com/cinascorp/tar/opensky)
-Schäfer, M., Strohmeier, M., Smith, M., & Lenders, V. (2020). OpenSky Report 2020: A Year of ADS-B and Mode S in 5.the Raw. In Proceedings of the 8th OpenSky Symposium.
-6.Three.js. (n.d.). Three.js – JavaScript 3D Library. Retrieved from [https://threejs.org/]
-(https://threejs.org/)
-Google Maps Platform. (n.d.). WebGL Overlay View. Retrieved from https://developers.google.com/maps/documentation/javascript/webgl
-IETF QUIC Working Group. (2021). QUIC: A UDP-Based Multiplexed and Secure Transport. RFC 9000.
+4.  cinascorp. (n.d.). *opensky*. GitHub. Retrieved from [https://github.com/cinascorp/opensky](https://www.google.com/search?q=https://github.com/cinascorp/tar/opensky)
+5.  Schäfer, M., Strohmeier, M., Smith, M., & Lenders, V. (2020). OpenSky Report 2020: A Year of ADS-B and Mode S in the Raw. In Proceedings of the 8th OpenSky Symposium.
+6.  Google Maps Platform. (n.d.). WebGL Overlay View. Retrieved from https://developers.google.com/maps/documentation/javascript/webgl
+7.  IETF QUIC Working Group. (2021). QUIC: A UDP-Based Multiplexed and Secure Transport. RFC 9000.
 [fundamental-en](https://raw.githubusercontent.com/cinascorp/opensky/refs/heads/main/fundamental-en.html)
+8.  Three.js. (n.d.). Three.js – JavaScript 3D Library. Retrieved from [https://threejs.org/]
+(https://threejs.org/)
+
+-----
 
 client side usage : 
 download pre-apk release from link : https://github.com/cinascorp/opensky/raw/refs/heads/main/TAR.apk 
