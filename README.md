@@ -202,9 +202,7 @@ The "TAR" project provides a comprehensive roadmap for the next generation of ai
 4.  cinascorp. (n.d.). *opensky*. GitHub. Retrieved from [https://github.com/cinascorp/opensky](https://www.google.com/search?q=https://github.com/cinascorp/tar/opensky)
 5.  Google Maps Platform. (n.d.). WebGL Overlay View. Retrieved from https://developers.google.com/maps/documentation/javascript/webgl
 6.  IETF QUIC Working Group. (2021). QUIC: A UDP-Based Multiplexed and Secure Transport. RFC 9000.
-(https://raw.githubusercontent.com/cinascorp/opensky/refs/heads/main/fundamental-en.html)
 7.  Three.js. (n.d.). – JavaScript 3D Library. Retrieved from [https://threejs.org/]
-(https://threejs.org/)
 8.  Schäfer, M., Strohmeier, M., Smith, M., & Lenders, V. (2020). OpenSky Report 2020: A Year of ADS-B and Mode S in the Raw. In Proceedings of the 8th OpenSky Symposium.
 
 -----
