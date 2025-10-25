@@ -74,9 +74,9 @@
 
   * **بردار وضعیت ($$\mathbf{x}$$):** حالت هر هواپیما با یک بردار شامل موقعیت و سرعت در سه بعد تعریف می‌شود.
 
-    $$\\mathbf{x} = [p\_x, p\_y, p\_z, v\_x, v\_y, v\_z]^T
+    \\mathbf{x} = [p\_x, p\_y, p\_z, v\_x, v\_y, v\_z]^T
 
-    $$
+    
   * **مدل حرکت (State Transition):** با فرض مدل سرعت ثابت، موقعیت بعدی هواپیما پیش‌بینی می‌شود.
 
     $$\\mathbf{x}*{k} = \\mathbf{F}\\mathbf{x}*{k-1} + \\mathbf{w}\_{k-1} \\quad \\text{where} \\quad \\mathbf{F} = \\begin{bmatrix} 1 & 0 & 0 & \\Delta t & 0 & 0 \\ 0 & 1 & 0 & 0 & \\Delta t & 0 \\ 0 & 0 & 1 & 0 & 0 & \\Delta t \\ 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 \\end{bmatrix}
