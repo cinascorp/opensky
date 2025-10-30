@@ -1,28 +1,28 @@
-<!doctype html>
-<html lang="en">
+
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=0.9">
+	<meta name="viewport" content="width=device-width, initial-scale=0.8">
 	<title>TAR</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.4.0/ol.css">
+	
 	<style>
-		:root {
-			--bg: #0b0f14;
-			--panel: #0f141b;
+	:root {
+			--bg: #ffffff;
+			--panel: #253c63;
 			--text: #ffd400; /* yellow font */
-			--border: #1c2833;
+			--border: #333a42;
 			--muted: #9aa2aa;
 			--country: #90ee90; /* light green */
-			--province: #ff69b4; /* hot pink */
+			--province: #ff69b4; /* hot pink for visibility */
 			--road: #8fd3ff; /* light blue */
-			--mil: #ff2d2d; /* red */
+			--mil: #4b1313; /* red */
 			--passenger: #ffe34d; /* yellow */
-			--commercial: #ffa64d; /* orange */
+			--commercial: #4dacff; /* orange */
 			--private: #b56dff; /* purple */
-			--droneLow: #ffffff; /* white */
-			--droneHigh: #7f7f7f; /* gray */
-		}
+			--droneLow: #d21674; /* white */
+			--droneHigh: #ff0000; /* gray */
+	}
 		html, body {
 			height: 100%;
 			background: var(--bg);
@@ -36,7 +36,7 @@
 			bottom: 0;
 		}
 		.ol-zoom, .ol-rotate {
-			filter: drop-shadow(0 0 2px rgba(0,0,0,0.6));
+		  position:hidden ;
 		}
 		.map-layer-toggle {
 			position: fixed;
@@ -51,10 +51,12 @@
 			border-radius: 50%;
 			display: flex;
 			align-items: center;
+			
 			justify-content: center;
 			font-weight: bold;
 			cursor: pointer;
 		}
+		
 		/* Offcanvas menu (right) */
 		.offcanvas-end {
 			background: var(--panel);
@@ -62,7 +64,7 @@
 			color: var(--text);
 		}
 		.offcanvas-end .form-select, .offcanvas-end .form-control, .offcanvas-end .form-check-input {
-			background: #0b0f14;
+			background: #435a76;
 			color: var(--text);
 			border-color: var(--border);
 		}
@@ -72,20 +74,25 @@
 		.offcanvas-end .table thead th {
 			border-bottom-color: var(--border);
 		}
-		.offcanvas-end .table td, .offcanvas-end .table th {
+		.offcanvas-end .table td, 
+		.offcanvas-end .table th {
 			border-color: var(--border);
 		}
-		/* Make the right menu 74% width on small screens */
-		@media (max-width: 768px) {
+		
+		
+		/* Make the right menu 60% width on small screens */
+		@media (max-width: 700px) {
 			.offcanvas-end {
-				width: 60% !important;
+				width: 70vw
+				!important;
 			}
 		}
+		
 		/* Toggle button in top-right */
 		#menuToggle {
 			position: fixed;
-			top: 240px;
-			right: 11px;
+			top: 60px;
+			right: 10px;
 			z-index: 1100;
 			background: var(--panel);
 			border: 2px solid var(--border);
@@ -107,12 +114,29 @@
 			padding: .5rem .75rem;
 			font-size: .9rem;
 		}
-		.legend .item { display: flex; align-items: center; gap: .4rem; margin:.2rem 0; }
-		.legend .swatch { width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
-		.legend .icon-swatch { width: 20px; height: 20px; display: inline-block; }
+		.legend
+		.item {
+		  display: flex; 
+		  align-items: center;
+		  gap: .4rem;
+		  margin:.2rem 0;
+		  }
+		  
+		.legend 
+		.swatch { 
+		  width: 16px; height: 16px; border-radius: 3px; display: inline-block; }
+		
+		.legend 
+		.icon-swatch { 
+		  width: 20px; 
+		  height: 20px; 
+		  display:
+		  inline-block; }
+		
 		/* Popup */
 		#popup {
 			position: absolute;
+			font-size: 11px;
 			background: rgba(15,20,27,0.98);
 			border: 1px solid var(--border);
 			padding: .5rem .75rem;
@@ -121,16 +145,20 @@
 			color: var(--text);
 			z-index: 900;
 		}
-		#popup-closer { cursor: pointer; float: right; }
-		.small-muted { color: var(--muted); font-size: .85rem; }
+		#popup-closer { 
+		  cursor: pointer; float: right; border:2px; }
+		  
+		.small-muted { 
+		  color: var(--muted); font-size: .85rem; }
+		  
 		/* OSM attribution */
 		#attribution {
 			position: fixed;
 			bottom: 10px;
 			right: 10px;
-			z-index: 900;
+			z-index: -900;
 			background: rgba(15,20,27,0.9);
-			border: 1px solid var(--border);
+			border: b56dff solid var(--border);
 			border-radius: .5rem;
 			padding: .2rem .5rem;
 			font-size: .8rem;
@@ -138,11 +166,11 @@
 		
 		/* Enhanced popup styles */
 		#popup {
-			max-width: 400px;
+			max-width: 320px;
 		}
 		
 		#aircraft-image-container img {
-			transition: transform 0.2s ease;
+			transition: transform 0.1s ease;
 		}
 		
 		#aircraft-image-container img:hover {
@@ -157,39 +185,58 @@
 		}
 
 		/* Position zoom controls on right, beneath L and Copilot */
-		.ol-zoom { left: auto; right: 10px; top: 160px; }
+	  	.ol-zoom {
+		  right: auto;
+		  right: -10px; 
+		  top: -160px; }
 
 		/* Gradient bar for altitude spectrum in guide */
-		.spectrum-bar { width: 120px; height: 16px; border-radius: 3px; display: inline-block; background: linear-gradient(to right, #FFA500, #FFFF00, #00FF00, #0000FF, #4B0082, #800080); }
+		.spectrum-bar { 
+		  width: 120px; 
+		  height: 16px; 
+		  border-radius: 3px; 
+		  display: inline-block;
+		  background: linear-gradient(to right, #FFA500, #FFFF00, #00FF00, #0000FF, #4B0082, #800080); }
 
 		/* Copilot floating button stacked under L */
-		#copilotToggle { position: fixed; top: 110px; right: 10px; }
+		
+		#copilotToggle { 
+		position: flex;
+		top: 220px;
+		right: 10px; 
+		  
+		}
+		
 	</style>
 </head>
 <body>
-	<button id="menuToggle" class="btn btn-sm" data-bs-toggle="offcanvas" data-bs-target="#rightMenu" aria-controls="rightMenu" aria-expanded="false"><span id="menuToggleIcon">&lt;</span></button>
+	<button id="menuToggle" class="btn btn-sm" data-bs-toggle="offcanvas" data-bs-target="#rightMenu" aria-controls="rightMenu" aria-expanded="false">
+	  <span id="menuToggleIcon"> ☰ </span>
+	  </button>
 
-	<button id="mapLayerToggle" class="map-layer-toggle" title="Toggle Map Layer">L</button>
-	<button id="copilotToggle" class="map-layer-toggle" title="Open Copilot" data-bs-toggle="offcanvas" data-bs-target="#copilotPanel">㉿</button>
+	<button id="mapLayerToggle" class="map-layer-toggle" title="Toggle Map Layer" style="position:fixed ; top:170 ; right:10">L</button>
+	
+	<button id="copilotToggle" class="map-layer-toggle" title="Open Copilot" data-bs-toggle="offcanvas" data-bs-target="#copilotPanel">VS</button>
 
-	<div id="map"></div>
+	<div id="map"> </div>
 
 	<div id="popup" style="display:none;">
-		<div><span id="popup-closer">✕</span></div>
-		<div id="popup-content"></div>
-		<div id="aircraft-image-container" style="display:none; margin-top: 10px; text-align: center;">
-			<iframe>
-			  
-			  
-			</iframe>
+		<div>
+		  <span id="popup-closer"> ✕
+		  </span>
+		  </div>
+		<div id="popup-content">
+		  
+		  </div>
+		<div id="aircraft-image-container" 
+		style="display:none; 
+		margin-top: 10px; 
+		text-align: center;">
+		  
+	<!--		<iframe id="aircraft-frame" style="width: 100%; height: 240px; border-radius: 5px; border: 0;" title="Aircraft photo gallery" href="https://www.planespotting.be/index.php?page=" >
+			</iframe> -->
 			<div id="aircraft-links" style="margin-top: 5px;"></div>
 		</div>
-	</div>
-
-	<!-- Legend moved to menu only -->
-	
-	<div id="attribution">
-		<span class="small-muted">© OpenStreetMap contributors</span>
 	</div>
 
 	<div class="offcanvas offcanvas-end" tabindex="-1" id="rightMenu" aria-labelledby="rightMenuLabel">
@@ -201,7 +248,7 @@
 			<div class="mb-3">
 				<label class="form-label">Flight Group</label>
 				<select id="groupSelect" class="form-select"></select>
-				<div class="form-text text-warning">Groups of ~1000 flights (A, B, C... AA, AB...)</div>
+				<div class="form-text text-warning">Groups of ~ +20000 flights (A, B, C... AA, AB...)</div>
 			</div>
 			<div class="row g-2 align-items-center mb-3">
 				<div class="col-auto">
@@ -277,25 +324,24 @@
 						</tbody>
 					</table>
 				</div>
-				<!-- Map layer color guide removed per request -->
+	
 			</div>
-
-			<div class="mb-3">
-				<h6 class="mb-2">Flight Groups by Country</h6>
-				<div class="table-responsive" style="max-height: 300px; overflow: auto;">
-					<table class="table table-sm" id="flightGroupsByCountryTable">
-						<thead><tr><th>Country</th><th>Group</th><th>Count</th><th>Actions</th></tr></thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
-
 			<div class="mb-3" id="selectedGroupDetails" style="display: none;">
 				<h6 class="mb-2">Selected Group Details</h6>
 				<div class="table-responsive" style="max-height: 300px; overflow: auto;">
 					<table class="table table-sm" id="selectedGroupTable">
-						<thead><tr><th>Flight Number</th><th>Aircraft Type</th><th>Country</th><th>Status</th></tr></thead>
-						<tbody></tbody>
+					  
+						<thead>
+						  <tr>
+						    <th>Flight Number</th>
+						    <th>Aircraft Type</th>
+						    <th>Country</th>
+						    <th>Status</th>
+						    </tr>
+						    </thead>
+						<tbody>
+						  
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -304,38 +350,28 @@
 	</div>
 
 	<!-- Copilot offcanvas panel -->
-	
-	
 	<div class="offcanvas offcanvas-start" tabindex="-1" id="copilotPanel" aria-labelledby="copilotLabel">
+	  
+	  
 		<div class="offcanvas-header">
-		
-		
-			<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close">Close</button>
+			<h5 id="copilotLabel" style="height:10px">Cinascorp</h5>
 			
 			
-			
+			<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
-		<div class="offcanvas-body p-0" style="height: calc(60% - 56px);">
-	
-	
-	<!--  iframe Pause For Fr24 --------
-	
-	<iframe id="copilotFrame" src="https://flightradar24.com/simple" style="width: 100%; height: 100%; border: 0;"></iframe>
-	
-	--------------->
-
+		<div class="offcanvas-body p-0" style="height: calc(100% - 50px);">
+		  
+			<iframe id="copilotFrame" src="about:blank" style="width: 100%; height: 48%; border: 0;"></iframe>
+						<iframe src="http://www.flightradar24.com/simple" style="width: 100%; height: 48%; border: 0;"></iframe>
 			
 			
-			<div class="p-2 small-muted">If chat fails to load,
-			<a class="link-warning" id="copilotExternalLink" href="#" target="_blank" rel="noopener">open Copilot in a new tab</a>.
-			</div>
 			
-			
+			<div class="p-2 small-muted">The External Link<a class="link-warning" id="copilotExternalLink" href="#" target="_blank" rel="noopener">For Future </a>.</div>
 		</div>
-		
-	
-	
 	</div>
+
+
+
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/ol@v7.4.0/dist/ol.js"></script>
@@ -362,19 +398,24 @@
 		function getCssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
 
 		// SVG icons (inline)
-		const DRONE_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 10a2 2 0 100 4 2 2 0 000-4zm-7-2l3 1 2-1 1 2-1 2-2-1-3 1 1-3-1-2zm14 0l-3 1-2-1-1 2 1 2 2-1 3 1-1-3 1-2zM5 17l3-1 2 1 1-2-1-2-2 1-3-1 1 3-1 2zm14 0l-3-1-2 1-1-2 1-2 2 1 3-1-1 3 1 2z"/></svg>')}`;
-		const DRONE_SVG_BLACK = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="black"><path d="M12 10a2 2 0 100 4 2 2 0 000-4zm-7-2l3 1 2-1 1 2-1 2-2-1-3 1 1-3-1-2zm14 0l-3 1-2-1-1 2 1 2 2-1 3 1-1-3 1-2zM5 17l3-1 2 1 1-2-1-2-2 1-3-1 1 3-1 2zm14 0l-3-1-2 1-1-2 1-2 2 1 3-1-1 3 1 2z"/></svg>')}`;
-		const HELI_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#ffe34d"><path d="M3 12h10a4 4 0 110 8H8a5 5 0 01-5-5v-3zm14-6h-4a1 1 0 110-2h9a1 1 0 110 2h-3v5h-2V6z"/></svg>')}`;
+		const DRONE_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M12 10a2 2 0 100 4 2 2 0 000-4zm-7-2l3 1 2-1 1 2-1 2-2-1-3 1 1-3-1-2zm14 0l-3 1-2-1-1 2 1 2 2-1 3 1-1-3 1-2zM5 17l3-1 2 1 1-2-1-2-2 1-3-1 1 3-1 2zm14 0l-3-1-2 1-1-2 1-2 2 1 3-1-1 3 1 2z"/></svg>')}`;
+
+		const DRONE_SVG_BLACK = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black"><path d="M12 10a2 2 0 100 4 2 2 0 000-4zm-7-2l3 1 2-1 1 2-1 2-2-1-3 1 1-3-1-2zm14 0l-3 1-2-1-1 2 1 2 2-1 3 1-1-3 1-2zM5 17l3-1 2 1 1-2-1-2-2 1-3-1 1 3-1 2zm14 0l-3-1-2 1-1-2 1-2 2 1 3-1-1 3 1 2z"/></svg>')}`;
+		
+		
+		const HELI_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#4dffc7"><path d="M3 12h10a4 4 0 110 8H8a5 5 0 01-5-5v-3zm14-6h-4a1 1 0 110-2h9a1 1 0 110 2h-3v5h-2V6z"/></svg>')}`;
 		
 		// Airplane icons with different sizes
-		const AIRPLANE_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>')}`;
-		const AIRPLANE_SMALL_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>')}`;
-		const AIRPLANE_PROP_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/><circle cx="12" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1"/></svg>')}`;
-		const FIGHTER_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2l3 5h5l-4 4 2 9-6-4-6 4 2-9-4-4h5z"/></svg>')}`;
+		
+		const AIRPLANE_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#04b6ff"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>')}`;
+		
+		const AIRPLANE_SMALL_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#2aebbb"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>')}`;
+		
+		const AIRPLANE_PROP_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#73ff73"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/><circle cx="12" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1"/></svg>')}`;
+		
+		const FIGHTER_SVG = `data:image/svg+xml;utf8,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="#ff0303" d="M12 2l3 5h5l-4 4 2 9-6-4-6 4 2-9-4-4h5z"/></svg>')}`;
 
 		// Menu legend icons (map legend removed)
-		
-		
 		document.getElementById('legend-heli-menu').style.backgroundImage = `url(${HELI_SVG})`;
 		document.getElementById('legend-heli-menu').style.backgroundSize = 'contain';
 		document.getElementById('legend-heli-menu').style.backgroundRepeat = 'no-repeat';
@@ -387,18 +428,15 @@
 			el.style.backgroundRepeat = 'no-repeat';
 		}
 
-// OpenLayers map
+		// OpenLayers map
 		const baseLayer = new ol.layer.Tile({
 			source: new ol.source.XYZ({ url: TILE_URLS[0], attributions: '© OpenStreetMap, © Carto' })
 		});
-	
 		baseLayer.getSource().on('tileloaderror', () => {
 			baseLayer.setSource(new ol.source.OSM());
 		});
 
-
-
-// Bright ESRI map layer
+		// Bright ESRI map layer
 		const brightLayer = new ol.layer.Tile({
 			source: new ol.source.XYZ({ 
 				url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',
@@ -407,11 +445,7 @@
 			visible: true
 		});
 
-
-
-// Removed country/province/road overlay layers per request
-
-
+		// Removed country/province/road overlay layers per request
 		const trackLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
 		const markerLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
 		const selectedFlightLayer = new ol.layer.Vector({ source: new ol.source.Vector() });
@@ -419,55 +453,31 @@
 		const map = new ol.Map({
 			target: 'map',
 			layers: [baseLayer, brightLayer, trackLayer, markerLayer, selectedFlightLayer],
-			view: new ol.View({ center: ol.proj.fromLonLat([9.0, 50.0]), zoom: 2, minZoom: 2, maxZoom: 18 })
+			view: new ol.View({ center: ol.proj.fromLonLat([52.600 , 36.500]), zoom: 4, minZoom: 1, maxZoom: 18 })
 		});
-
-
 		
-// Popup overlay
-
+		// Popup overlay
 		const popupEl = document.getElementById('popup');
 		const popupCloser = document.getElementById('popup-closer');
-		
 		const popupContent = document.getElementById('popup-content');
-	
 		const popup = new ol.Overlay({ element: popupEl, autoPan: { animation: { duration: 250 } } });
 		map.addOverlay(popup);
 		popupCloser.addEventListener('click', () => { popup.setPosition(undefined); popupEl.style.display = 'none'; });
 
 		// Data state
-		
-		let flightsByHex = new Map();
-		// hex -> flight object
-		
-		
-		let tracksByHex = new Map();
-		// hex -> [{lon,lat,alt_m,ts}]
-		
-		
+		let flightsByHex = new Map(); // hex -> flight object
+		let tracksByHex = new Map(); // hex -> [{lon,lat,alt_m,ts}]
 		let lastFullCount = 0;
 		let currentGroup = 'A';
 		let sortedHexes = [];
-		let autoUpdateTimer = true;
+		let autoUpdateTimer = null;
 		let resolvingCountries = false;
-		
-		
-		const countryCache = new Map(); 
-		// key: lat.toFixed(2)+","+lon.toFixed(2) => country
-		
-		
-		const elevationCache = new Map(); 
-		// key: lat.toFixed(2)+","+lon.toFixed(2) => meters MSL
-	
+		const countryCache = new Map(); // key: lat.toFixed(2)+","+lon.toFixed(2) => country
+		const elevationCache = new Map(); // key: lat.toFixed(2)+","+lon.toFixed(2) => meters MSL
 		let elevationQueueBusy = false;
-		
-		let selectedFlights = new Set(); 
-		// hex codes of selected flights
-		
+		let selectedFlights = new Set(); // hex codes of selected flights
 		let flightGroupsByCountry = new Map(); // country -> {group -> count}
-		
-		let currentMapLayer = 'bright'; // 'dark' or 'bright'
-		
+		let currentMapLayer = 'dark'; // 'dark' or 'bright'
 		const lastColorByHex = new Map(); // for smooth color transitions
 		
 		// UI refs
@@ -491,17 +501,16 @@
 		const copilotFrame = document.getElementById('copilotFrame');
 		const copilotExternalLink = document.getElementById('copilotExternalLink');
 
-
 		// Menu toggle icon swap
 		const menuToggleBtn = document.getElementById('menuToggle');
 		const menuToggleIcon = document.getElementById('menuToggleIcon');
 		menuToggleBtn.addEventListener('click', () => {
 			const expanded = menuToggleBtn.getAttribute('aria-expanded') === 'true';
-			menuToggleIcon.textContent = expanded ? '<<' : '>>';
+			menuToggleIcon.textContent = expanded ? '<' : '>';
 		});
 		const offcanvasEl = document.getElementById('rightMenu');
-		offcanvasEl.addEventListener('hidden.bs.offcanvas', () => { menuToggleIcon.textContent = '<<'; });
-		offcanvasEl.addEventListener('shown.bs.offcanvas', () => { menuToggleIcon.textContent = '>>'; });
+		offcanvasEl.addEventListener('hidden.bs.offcanvas', () => { menuToggleIcon.textContent = '<'; });
+		offcanvasEl.addEventListener('shown.bs.offcanvas', () => { menuToggleIcon.textContent = '>'; });
 
 		// Map layer toggle (and drone icon color)
 		mapLayerToggle.addEventListener('click', () => {
@@ -525,12 +534,12 @@
 		// Copilot panel: lazy-load and provide context link
 		copilotPanelEl.addEventListener('shown.bs.offcanvas', () => {
 			if (!copilotFrame.src || copilotFrame.src === 'about:blank') {
-				try { copilotFrame.src = 'https://copilot.microsoft.com/'; } catch(e) {}
+				try { copilotFrame.src = 'https://globe.airplanes.live/?lat=32.0&lon=53.0&zoom=5&esri=true&unmanned=true'; } catch(e) {}
 			}
 			const bounds = boundsFromView();
 			const selected = Array.from(selectedFlights).join(', ') || 'none';
 			const context = `Current viewport: lat ${bounds.minLat.toFixed(2)}..${bounds.maxLat.toFixed(2)}, lon ${bounds.minLon.toFixed(3)}..${bounds.maxLon.toFixed(3)}; selected flights: ${selected}`;
-			copilotExternalLink.href = 'https://copilot.microsoft.com/?q=' + encodeURIComponent('Analyze live flights. ' + context);
+			copilotExternalLink.href = 'https://Grok.com/?q=' + encodeURIComponent('' + context);
 		});
 
 		// Helpers
@@ -575,7 +584,7 @@
 			return Math.max(0, Math.min(1, (value - min) / (max - min)));
 		}
 		function makeGroupLabels(total) {
-			const size = 30000;
+			const size = 26000;
 			const numGroups = Math.ceil(total / size);
 			const labels = [];
 			const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -591,12 +600,12 @@
 		}
 
 		function setGroupOptions(total) {
-			const labels = makeGroupLabels(total || Math.max(28000, sortedHexes.length));
+			const labels = makeGroupLabels(total || Math.max(26000, sortedHexes.length));
 			groupSelect.innerHTML = '';
 			labels.forEach((lab, idx) => {
 				const opt = document.createElement('option');
 				opt.value = lab;
-				opt.textContent = `${lab} (${idx*30000+1}–${(idx+1)*30000})`;
+				opt.textContent = `${lab} (${idx*26000+1}–${(idx+1)*26000})`;
 				groupSelect.appendChild(opt);
 			});
 			groupSelect.value = currentGroup;
@@ -688,7 +697,7 @@
 		}
 
 		// Categorization heuristics
-		const militaryPrefixes = [ 'RCH', 'QID', 'LAGR', 'NATO', 'PAT', 'BOMBER', 'B52', 'B1B', 'TEX', 'HURK', 'CFC', 'GAF', 'BAF', 'HAF', 'IAF', 'RFF', 'AF', 'ZZ', 'NAVY', 'USAF', 'RAF', 'RCAF', 'ARMY' ];
+		const militaryPrefixes = [ 'RCH', 'QID', 'LAGR', 'NATO', 'F14' , 'FIGHTER' , 'F15' ,'F16', 'PAT', 'BOMBER', 'B52', 'B1B', 'TEX', 'HURK', 'CFC', 'GAF', 'BAF', 'HAF', 'IAF', 'RFF', 'AF', 'ZZ', 'NAVY', 'USAF', 'RAF', 'RCAF', 'ARMY' ];
 		const privateRegPatterns = [ /^N[0-9A-Z]{1,5}$/i, /^[A-Z]{1,2}-[A-Z]{3,5}$/i, /^RA-\d{4,}$/i, /^9H-[A-Z]{3}$/i, /^CS-[A-Z]{3}$/i, /^OY-[A-Z]{3}$/i ];
 		const airlineLike = /^[A-Z]{2,3}\d{2,4}[A-Z]?$/;
 
@@ -712,15 +721,11 @@
 		}
 		function isPrivate(f) {
 			if (f.callsign && airlineLike.test(f.callsign)) return false;
-		
 			if (f.callsign && privateRegPatterns.some(r => r.test(f.callsign))) return true;
 			if (f.reg && privateRegPatterns.some(r => r.test(f.reg))) return true;
 			return false;
 		}
-
 		function isPassenger(f) { return !!(f.callsign && airlineLike.test(f.callsign)); }
-		
-		
 		function categorize(f) {
 			if (isDrone(f)) return 'drone';
 			if (isHelicopter(f)) return 'helicopter';
@@ -741,13 +746,12 @@
 		}
 
 		function spectrumColorForAltitudeMeters(meters) {
-			const t = normalize(meters || 0, 0, 17000); // sea level to ~FL550
+			const t = normalize(meters || 0, 0, 50000); // sea level to ~FL550
 			return sampleSpectrum(t);
 		}
 		function sampleSpectrum(t) {
 			// t in [0,1], interpolate over [orange, yellow, green, blue, indigo, purple]
 			const stops = ['#FFA500','#FFFF00','#00FF00','#0000FF','#4B0082','#800080'];
-	
 			if (t <= 0) return stops[0];
 			if (t >= 1) return stops[stops.length-1];
 			const seg = 1/(stops.length-1);
@@ -789,12 +793,14 @@
 			feature.setStyle(style);
 			return feature;
 		}
+
 		function addToTrack(f) {
 			if (!tracksByHex.has(f.hex)) tracksByHex.set(f.hex, []);
 			const arr = tracksByHex.get(f.hex);
 			arr.push({ lon: f.lon, lat: f.lat, alt_m: f.alt_m || 0, ts: f.ts });
 			if (arr.length > 200) arr.shift();
 		}
+
 		function drawTrack(hex, category) {
 			const pts = tracksByHex.get(hex) || [];
 			if (pts.length < 2) return null;
@@ -811,14 +817,15 @@
 			}
 			return features;
 		}
+
 		function updateMarkersAndTracks() {
 			markerLayer.getSource().clear();
 			trackLayer.getSource().clear();
 			if (sortedHexes.length === 0) return;
 			const labels = makeGroupLabels(Math.max(lastFullCount || 0, sortedHexes.length));
 			const idx = labels.indexOf(currentGroup);
-			const start = idx >= 0 ? idx*30000 : 0;
-			const end = start + 30000;
+			const start = idx >= 0 ? idx*26000 : 0;
+			const end = start + 26000;
 			const slice = sortedHexes.slice(start, end);
 			for (const hex of slice) {
 				const f = flightsByHex.get(hex);
@@ -835,7 +842,7 @@
 		}
 
 		function updateInfoTables(allFlights) {
-			const counts = { passenger: 0, commercial: 0, private1: 0, helicopter: 0, military: 0, drone: 0 };
+			const counts = { passenger: 0, commercial: 0, private: 0, helicopter: 0, military: 0, drone: 0 };
 			const unidentified = [];
 			for (const f of allFlights) {
 				const cat = categorize(f);
@@ -855,15 +862,16 @@
 			unidentified.sort((a,b) => a.hex.localeCompare(b.hex)).slice(0, 200).forEach(f => {
 				const tr = document.createElement('tr');
 				const agl = (f.agl_m != null) ? f.agl_m : '—';
-				tr.innerHTML = `<td>${f.hex}</td><td>${f.lat.toFixed(2)}</td><td>${f.lon.toFixed(3)}</td><td>${agl}</td><td>${f.spd_kmh ?? '—'}</td>`;
+				tr.innerHTML = `<td>${f.hex}</td><td>${f.lat.toFixed(3)}</td><td>${f.lon.toFixed(3)}</td><td>${agl}</td><td>${f.spd_kmh ?? '—'}</td>`;
 				tbody.appendChild(tr);
 			});
 		}
+
 		function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 		async function resolveCountry(lat, lon) {
 			const key = `${lat.toFixed(2)},${lon.toFixed(3)}`;
 			if (countryCache.has(key)) return countryCache.get(key);
-			const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=3`;
+			const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}&zoom=1`;
 			const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
 			if (!resp.ok) return null;
 			const j = await resp.json();
@@ -872,9 +880,10 @@
 			await sleep(1100); // rate limiting
 			return name;
 		}
+
 		async function updateDroneByCountry(allFlights) {
 			const tbody = document.querySelector('#droneByCountryTable tbody');
-			tbody.innerHTML = '';
+			tbody.innerHTML = '?';
 			const drones = allFlights.filter(f => categorize(f) === 'drone').sort((a,b) => a.hex.localeCompare(b.hex));
 			const mapCountryToRows = new Map();
 			if (!resolveCountrySwitch.checked) return; // only when enabled
@@ -888,11 +897,12 @@
 				for (const f of mapCountryToRows.get(country)) {
 					const tr = document.createElement('tr');
 					const agl = (f.agl_m != null) ? f.agl_m : '—';
-					tr.innerHTML = `<td>${country}</td><td>${f.hex}</td><td>${f.lat.toFixed(3)}</td><td>${f.lon.toFixed(3)}</td><td>${agl}</td><td>${f.spd_kmh ?? '—'}</td>`;
+					tr.innerHTML = `<td>${country}</td><td>${f.hex}</td><td>${f.lat.toFixed(2)}</td><td>${f.lon.toFixed(3)}</td><td>${agl}</td><td>${f.spd_kmh ?? '—'}</td>`;
 					tbody.appendChild(tr);
 				}
 			}
 		}
+
 		async function updateFlightGroupsByCountry(allFlights) {
 			const tbody = document.querySelector('#flightGroupsByCountryTable tbody');
 			tbody.innerHTML = '';
@@ -915,6 +925,7 @@
 				}
 			}
 		}
+
 		function viewGroupDetails(country, group) {
 			const tbody = document.querySelector('#selectedGroupTable tbody');
 			tbody.innerHTML = '';
@@ -932,6 +943,8 @@
 			}
 			document.getElementById('selectedGroupDetails').style.display = 'block';
 		}
+
+		// Map click -> popup
 		map.on('singleclick', (evt) => {
 			map.forEachFeatureAtPixel(evt.pixel, (feature, layer) => {
 				if (layer !== markerLayer) return;
@@ -970,15 +983,16 @@
 				updateSelectedFlightsDisplay();
 			});
 		});
+
 		function makeFR24Link(f) {
 			const flightPart = (f.callsign || '').replace(/\s+/g,'');
 			const idPart = f.hex;
-			return `https://www.flightradar24.com/${flightPart}/${idPart}/3d`;
+			return `https:/flightradar24.com/${flightPart}/${idPart}/3d`;
 		}
 
 		function getAircraftGalleryUrl(f) {
 			if (!f.acType) return null;
-			return `https://www.airplane-pictures.net/search.php?search=${encodeURIComponent(f.acType)}`;
+			return `https://planespotting.be/${encodeURIComponent(f.acType)}`;
 		}
 
 		function showAircraftGallery(f, url) {
@@ -995,6 +1009,8 @@
 			}
 			aircraftImageContainer.style.display = 'block';
 		}
+
+		// Flight selection functions
 		function toggleFlightSelection(hex) {
 			if (selectedFlights.has(hex)) selectedFlights.delete(hex); else selectedFlights.add(hex);
 			updateSelectedFlightsDisplay();
@@ -1010,6 +1026,7 @@
 			}
 		}
 		function clearAllSelections() { selectedFlights.clear(); updateSelectedFlightsDisplay(); }
+
 		function drawEnhancedTrack(hex, category) {
 			const pts = tracksByHex.get(hex) || [];
 			if (pts.length < 2) return [];
@@ -1044,6 +1061,8 @@
 			}
 			return features;
 		}
+
+		// Load loop
 		async function refresh() {
 			const bounds = boundsFromView();
 			let data;
@@ -1066,12 +1085,13 @@
 			}
 			computeAGLForDrones(parsed.flights).then(() => { updateMarkersAndTracks(); updateInfoTables(parsed.flights); });
 		}
+
 		refreshBtn.addEventListener('click', refresh);
 		autoUpdateSwitch.addEventListener('change', () => { if (autoUpdateSwitch.checked) startAutoUpdate(); else stopAutoUpdate(); });
 		groupSelect.addEventListener('change', (e) => { currentGroup = e.target.value; updateMarkersAndTracks(); });
 		resolveCountrySwitch.addEventListener('change', () => { updateDroneByCountry(Array.from(flightsByHex.values())); });
 
-		function startAutoUpdate() { if (autoUpdateTimer) clearInterval(autoUpdateTimer); autoUpdateTimer = setInterval(refresh, 3000); }
+		function startAutoUpdate() { if (autoUpdateTimer) clearInterval(autoUpdateTimer); autoUpdateTimer = setInterval(refresh, 5000); }
 		function stopAutoUpdate() { if (autoUpdateTimer) { clearInterval(autoUpdateTimer); autoUpdateTimer = null; } }
 
 		async function getElevation(lat, lon) {
@@ -1104,9 +1124,17 @@
 				}
 			} finally { elevationQueueBusy = false; }
 		}
-const animatedFeatures = new Map();
+
+	
+
+/* ====== Animation + lerp helpers (add these near your globals) ====== */
+
+const animatedFeatures = new Map(); // hex -> { feature, from:{lon,lat,heading}, to:{lon,lat,heading}, startTs }
 let animationRunning = false;
+
 function lerp(a, b, t) { return a + (b - a) * t; }
+
+// shortest angular interpolation (degrees). returns angle in degrees.
 function lerpAngle(aDeg, bDeg, t) {
   if (aDeg == null) return bDeg ?? 0;
   if (bDeg == null) return aDeg ?? 0;
@@ -1118,11 +1146,15 @@ function lerpAngle(aDeg, bDeg, t) {
   if (diff < -180) diff += 360;
   return (a + diff * t + 360) % 360;
 }
+
+// Set a flight's target. If feature does not exist create it.
 function setFlightTarget(f, durationMs) {
   const hex = f.hex;
   const target = { lon: f.lon, lat: f.lat, heading: (f.heading != null ? f.heading : null) };
+
   if (animatedFeatures.has(hex)) {
     const entry = animatedFeatures.get(hex);
+    // If feature exists but no "from" set (first run), derive from current geometry
     if (!entry.from) {
       try {
         const coords = entry.feature.getGeometry().getCoordinates();
@@ -1132,6 +1164,8 @@ function setFlightTarget(f, durationMs) {
         entry.from = { lon: target.lon, lat: target.lat, heading: target.heading || 0 };
       }
     }
+    // Move "from" forward if last "to" differs and we were mid-animation
+    // Make the new from the current displayed position so animation is smooth.
     const now = Date.now();
     const elapsed = Math.max(0, now - (entry.startTs || now));
     const tNow = Math.min(1, (durationMs > 0) ? (elapsed / durationMs) : 1);
@@ -1145,7 +1179,9 @@ function setFlightTarget(f, durationMs) {
     entry.startTs = Date.now();
     entry.duration = durationMs;
   } else {
-    const feat = featureForFlight(f);
+    // create new feature with current location set to target (so it appears immediately, but will smoothly move to same target)
+    const feat = featureForFlight(f); // reuse your style creation routine
+    // ensure geometry is set to target now:
     feat.setGeometry(new ol.geom.Point(ol.proj.fromLonLat([target.lon, target.lat])));
     markerLayer.getSource().addFeature(feat);
     animatedFeatures.set(hex, {
@@ -1159,13 +1195,16 @@ function setFlightTarget(f, durationMs) {
     addToTrack(f);
   }
 }
+
+// Animation loop - interpolates all animatedFeatures
 function animatePositions() {
   if (animationRunning) return;
   animationRunning = true;
+
   (function frame() {
     const now = Date.now();
     let any = false;
-    const durationMs = autoUpdateSwitch && autoUpdateSwitch.checked ? 5000 : 3000;
+    const durationMs = (typeof autoUpdateSwitch !== 'undefined' && autoUpdateSwitch && autoUpdateSwitch.checked) ? 5000 : 3000;
 
     for (const [hex, entry] of animatedFeatures) {
       const d = Math.max(1, entry.duration || durationMs);
@@ -1176,7 +1215,9 @@ function animatePositions() {
       const lat = lerp(entry.from.lat, entry.to.lat, t);
       // interpolate heading
       const heading = lerpAngle(entry.from.heading ?? 0, entry.to.heading ?? 0, t);
+
       entry.feature.getGeometry().setCoordinates(ol.proj.fromLonLat([lon, lat]));
+
       // update rotation if icon style uses rotation — attempt to update style rotation
       try {
         const st = entry.feature.getStyle();
@@ -1194,6 +1235,7 @@ function animatePositions() {
       } catch (e) {
         // ignore style update errors
       }
+
       if (t < 1) any = true;
       else {
         // mark that we've reached the target — keep entry.from = entry.to so next target animates from here
@@ -1202,6 +1244,7 @@ function animatePositions() {
         entry.duration = durationMs;
       }
     }
+
     if (any) {
       requestAnimationFrame(frame);
     } else {
@@ -1209,9 +1252,11 @@ function animatePositions() {
     }
   })();
 }
+
 function updateMarkersAndTracks() {
   // We no longer clear markerLayer entirely; we update/animate existing features.
   if (sortedHexes.length === 0) return;
+
   const labels = makeGroupLabels(Math.max(lastFullCount || 0, sortedHexes.length));
   const idx = labels.indexOf(currentGroup);
   const start = idx >= 0 ? idx * 30000 : 0;
@@ -1220,6 +1265,7 @@ function updateMarkersAndTracks() {
 
   const visibleSet = new Set(slice);
   const durationMs = autoUpdateSwitch && autoUpdateSwitch.checked ? 5000 : 3000;
+
   // Set/update targets for visible flights
   for (const hex of slice) {
     const f = flightsByHex.get(hex);
@@ -1238,6 +1284,7 @@ function updateMarkersAndTracks() {
       setFlightTarget(f, durationMs);
     }
   }
+
   // Remove features that are no longer in the visible slice
   for (const [hex, entry] of Array.from(animatedFeatures.entries())) {
     if (!visibleSet.has(hex)) {
@@ -1246,134 +1293,53 @@ function updateMarkersAndTracks() {
       animatedFeatures.delete(hex);
     }
   }
+
+  // Ensure animation loop is running
   animatePositions();
-  trackLayer.getSource().clear();
+
+  // Track Layer: selectively update features for better performance
+  const trackSource = trackLayer.getSource();
+  const existingFeatures = trackSource.getFeatures();
+  const selectedSet = new Set(selectedFlights);
+
+  // Remove features for tracks that are no longer selected
+  for (const feat of existingFeatures) {
+    const hex = feat.get('hex');
+    if (!selectedSet.has(hex)) {
+      trackSource.removeFeature(feat);
+    }
+  }
+
+  // Add or update features for currently selected flights
   for (const hex of selectedFlights) {
     const f = flightsByHex.get(hex);
     if (!f) continue;
     const segs = drawTrack(hex, categorize(f));
-    if (segs) segs.forEach(sf => trackLayer.getSource().addFeature(sf));
+    if (segs) {
+      segs.forEach(sf => {
+        // Remove old features for this hex if present
+        existingFeatures
+          .filter(feat => feat.get('hex') === hex)
+          .forEach(feat => trackSource.removeFeature(feat));
+        // Add new segment feature
+        sf.set('hex', hex);
+        trackSource.addFeature(sf);
+      });
+    }
   }
-};
-
-//////////// size And The Color ////////
-function metersToFeet(m) { return Math.round(Number(m) / 0.3048); }
-function getAltitudeColorForFeet(altFt) {
-    // clamp
-    if (altFt == null || isNaN(altFt)) altFt = 0;
-    altFt = Math.max(0, Math.min(42000, Number(altFt)));
-
-    if (altFt <= 7000) return '#FFA500';        // orange (0–7000)
-    if (altFt <= 14000) return '#FFFF00';       // yellow (7001–14000)
-    if (altFt <= 21000) return '#00FF00';       // green (14001–21000)
-    if (altFt <= 28000) return '#0000FF';       // blue (21001–28000)
-    if (altFt <= 35000) return '#FF69B4';       // pink (28001–35000) — you said "pink maybe better"
-    return '#800080';                           // purple (35001–42000)
 }
-function iconSizeForZoom(zoom) {
-    // mapping provided by you; ensure integer zoom
-    const z = Math.round(zoom || 2);
-    const map = {
-        2: 15, 3: 16, 4: 17, 5: 18, 6: 19, 7: 20, 8: 22, 9: 24,
-        10: 26, 11: 28, 12: 30, 13: 32, 14: 34, 15: 36, 16: 38, 17: 40, 18: 42
-    };
-    // clamp between 2 and 18
-    const zc = Math.max(2, Math.min(18, z));
-    return map[zc] || 15;
-}
-function getIntrinsicSizeForCapacity(capacity) {
-    // choose the source SVG intrinsic width used earlier in your script
-    // (these numbers should match the width attributes in the SVG data URIs)
-    if (capacity === 'small_prop') return 20;     // matches AIRPLANE_PROP_SVG width="20"
-    if (capacity === 'small_passenger') return 16; // matches AIRPLANE_SMALL_SVG width="16"
-    return 17; // default AIRPLANE_SVG width="17"
-}
-function featureForFlight(f) {
-    const category = categorize(f);
-    const point = new ol.geom.Point(ol.proj.fromLonLat([f.lon, f.lat]));
-    const zoom = (map && map.getView) ? map.getView().getZoom() : 2;
-    const desiredPx = iconSizeForZoom(zoom);
-    if (category === 'drone') {
-        const droneSrc = (currentMapLayer === 'dark') ? DRONE_SVG : DRONE_SVG_BLACK;
-        const intrinsic = 24;
-        const scale = desiredPx / intrinsic;
-        const style = new ol.style.Style({
-            image: new ol.style.Icon({ src: droneSrc, scale: Math.max(0.5, scale) })
-        });
-        const feature = new ol.Feature({ geometry: point, hex: f.hex, data: f, category });
-        feature.setStyle(style);
-        return feature;
-    }
-    if (category === 'helicopter') {
-
-        const intrinsic = 24;
-        const scale = desiredPx / intrinsic;
-        const style = new ol.style.Style({
-            image: new ol.style.Icon({ src: HELI_SVG, scale: Math.max(0.6, scale) })
-        });
-        const feature = new ol.Feature({ geometry: point, hex: f.hex, data: f, category });
-        feature.setStyle(style);
-        return feature;
-    }
-    if (category === 'military') {
-
-        const intrinsic = 24; 
-        const scale = desiredPx / intrinsic;
-        const color = COLORS.military || getAltitudeColorForFeet(f.alt_ft || metersToFeet(f.alt_m || 0));
-        const style = new ol.style.Style({
-            image: new ol.style.Icon({ src: FIGHTER_SVG, scale: Math.max(0.6, scale), color })
-        });
-        const feature = new ol.Feature({ geometry: point, hex: f.hex, data: f, category });
-        feature.setStyle(style);
-        return feature;
-    }
-    const altFt = (f.alt_ft != null && !isNaN(f.alt_ft)) ? Number(f.alt_ft) : metersToFeet(f.alt_m || 0);
-    const color = getAltitudeColorForFeet(altFt);
-    const capacity = estimatePassengerCapacity(f);
-    let intrinsic = getIntrinsicSizeForCapacity(capacity);
-    let src = AIRPLANE_SVG; // default
-    if (capacity === 'small_prop') {
-        src = AIRPLANE_PROP_SVG;
-        intrinsic = getIntrinsicSizeForCapacity('small_prop');
-    } else if (capacity === 'small_passenger') {
-        src = AIRPLANE_SMALL_SVG;
-        intrinsic = getIntrinsicSizeForCapacity('small_passenger');
-    } else {
-    }
-    const scale = desiredPx / intrinsic;
-    const rotation = (f.heading || 0) * Math.PI / 180;
-    const style = new ol.style.Style({
-        image: new ol.style.Icon({
-            src: src,
-            scale: Math.max(0.5, scale),
-            color: color,
-            rotation: rotation,
-        })
-    });
-    const feature = new ol.Feature({ geometry: point, hex: f.hex, data: f, category });
-    feature.setStyle(style);
-    return feature;
-}
-if (map && map.getView && typeof updateMarkersAndTracks === 'function') {
-    map.getView().on('change:resolution', () => {
-        try {
-            updateMarkersAndTracks();
-        } catch (e) {
-        
-            console.warn('updateMarkersAndTracks not available when zoom changed', e);
-        }
-    });
-}
-///////// Make functions globally accessible
+	// Make functions globally accessible
 		window.toggleFlightSelection = toggleFlightSelection;
 		window.viewGroupDetails = viewGroupDetails;
 		window.clearAllSelections = clearAllSelections;
+
 		// initial
 		setGroupOptions(30000);
 		updateDroneLegendIcons();
 		refresh();
 		startAutoUpdate();
 	})();
+	
 </script>
 </body>
 </html>
