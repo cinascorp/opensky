@@ -2,7 +2,7 @@
 
 ## HTTP/3 -  Web Workers - WebGL
 
-<img width="2000" height="1331" alt="opensky_tar" src="https://github.com/user-attachments/assets/143c7d32-8d79-4077-bba8-1164d9702908" />
+<img width="2000" height="1331" alt="opensky_tar" src="https://github.com/cinascorp/opensky/blob/main/opensky_2025.png" />
 
 # https://cinascorp.com
 ## https://tar-71bmnlj.gamma.site/
